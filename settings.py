@@ -10,15 +10,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/media/sda3/stage/dev/DjangoAppTests/mysite/taskmanager.db',                      # Or path to database file if using sqlite3.
-    }
-}
-"""
-
 DATABASES = {
     'default' : {
       'ENGINE' : 'django_mongodb_engine',
