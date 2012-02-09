@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Tasks list</h1>
+
+<form action="{% url add_task %}" method="post">{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Add" />
+</form>
+
+<form id="formulaire_multiple" action="{% url delete_multiple_task %}" method='post'>{% csrf_token %}
+{% if task_list %}
+    <a href="#" id="link_supprimer">delete</a> | <a href="#" id="link_done">done</a> | <a href="#" id="link_not_done">not done</a>
+    <input type="hidden" name="action_type" id="action_type" value="delete" /><br/><br/>
+    <table width="100%" border="1">
+    	<tr>
+            <td width="20px"></td>
+    		<td align="center">Taches</td>
+    		<td align="center" width="50px">Etat</td>
+            <td align="center" colspan="3">Actions</td>
+    	</tr>
+    {% for task in task_list %}
+        <tr>
+            <td><input type="checkbox" name='tasks' value="{{ task.id }}" /></td>
+    		<td>{{ task.title }}</td>
+    		<td style="background-color:{% if task.done %}green{% else %}red{% endif %}"></td>
+            <td width="50px" align="center"><a href="{% url delete_task task_id=task.id %}">delete</a></td>
+            <td width="50px" align="center"><a href="{% url update_form_task task_id=task.id %}">update</a></td>
+            <td width="50px" align="center"><a href="{% url done_task task_id=task.id %}">done</a></td>
+    	</tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No tasks are available.</p>
+{% endif %}
+</form>
+{% endblock %}
+
+{% block script_java %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#link_supprimer").click(function(){
+            $("#action_type").val("delete");
+            $("#formulaire_multiple").submit();
+        });
+
+        $("#link_done").click(function(){
+            $("#action_type").val("done");
+            $("#formulaire_multiple").submit();
+        });
+
+        $("#link_not_done").click(function(){
+            $("#action_type").val("notdone");
+            $("#formulaire_multiple").submit();
+        });
+    })
+</script>
+{% endblock %}
